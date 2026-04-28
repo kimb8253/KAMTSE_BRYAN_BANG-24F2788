@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="navbar">
+    <a href="/">🏠 Dashboard</a>
+    <a href="/grades">📊 Grades</a>
+    <a href="/revision">📅 Revision</a>
+</div>
+
+<div class="container">
+    <h2>Welcome!</h2>
+    <p>Today is {{ date }}</p>
+    <div class="card">Average Grade: {{ avg_grade }}%</div>
+
+    <h3>Subjects Overview</h3>
+    <ul>
+        {% for s in subjects %}
+        <li>{{ s[0] }} → {{ s[1] }}</li>
+        {% endfor %}
+    </ul>
+</div>
+</body>
+</html>
+

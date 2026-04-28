@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Grades</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script>
+        function confirmDelete(url) {
+            if (confirm("Are you sure you want to delete this grade?")) {
+                window.location.href = url;
+            }
+        }
+    </script>
+</head>
+<body>
+<div class="navbar">
+    <a href="/">🏠 Dashboard</a>
+    <a href="/grades">📊 Grades</a>
+    <a href="/revision">📅 Revision</a>
+</div>
+
+<div class="container">
+    <h2>Enter Exam Data</h2>
+    <form method="POST">
+        <input name="subject" placeholder="Subject" required>
+        <input type="number" name="score" placeholder="Score" required>
+        <input type="date" name="exam_date" required>
+        <button type="submit">+ Add Exam</button>
+    </form>
+
+    <table>
+        <tr><th>Subject</th><th>Score</th><th>Date</th><th>Actions</th></tr>
+        {% for g in grades %}
+        <tr>
+            <td>{{ g[1] }}</td><td>{{ g[2] }}</td><td>{{ g[3] }}</td>
+            <td>
+                <a href="/edit_grade/{{ g[0] }}">✏️ Edit</a> |
+                <a href="javascript:void(0);" onclick="confirmDelete('/delete_grade/{{ g[0] }}')">🗑️ Delete</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+</body>
+</html>
+

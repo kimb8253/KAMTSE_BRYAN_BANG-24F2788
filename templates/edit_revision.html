@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Revision</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="navbar">
+    <a href="/">🏠 Dashboard</a>
+    <a href="/grades">📊 Grades</a>
+    <a href="/revision">📅 Revision</a>
+</div>
+
+<div class="container">
+    <h2>Edit Revision</h2>
+    <form method="POST">
+        <input name="subject" value="{{ rev[1] }}" required>
+        <input type="date" name="date" value="{{ rev[2] }}" required>
+        <input type="time" name="time" value="{{ rev[3] }}" required>
+        <button type="submit">💾 Save Changes</button>
+    </form>
+</div>
+</body>
+</html>
+

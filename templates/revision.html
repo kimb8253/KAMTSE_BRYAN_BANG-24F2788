@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Revision Schedule</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script>
+        function confirmDelete(url) {
+            if (confirm("Are you sure you want to delete this revision?")) {
+                window.location.href = url;
+            }
+        }
+    </script>
+</head>
+<body>
+<div class="navbar">
+    <a href="/">🏠 Dashboard</a>
+    <a href="/grades">📊 Grades</a>
+    <a href="/revision">📅 Revision</a>
+</div>
+
+<div class="container">
+    <h2>Revision Schedule</h2>
+
+    <form method="POST">
+        <input name="subject" placeholder="Subject" required>
+        <input type="date" name="date" required>
+        <input type="time" name="time" required>
+        <button type="submit">+ Add Revision</button>
+    </form>
+
+    <table>
+        <tr><th>Subject</th><th>Date</th><th>Time</th><th>Actions</th></tr>
+        {% for r in revision %}
+        <tr>
+            <td>{{ r[1] }}</td><td>{{ r[2] }}</td><td>{{ r[3] }}</td>
+            <td>
+                <a href="/edit_revision/{{ r[0] }}">✏️ Edit</a> |
+                <a href="javascript:void(0);" onclick="confirmDelete('/delete_revision/{{ r[0] }}')">🗑️ Delete</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+</body>
+</html>
+

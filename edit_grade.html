@@ -1,0 +1,26 @@
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Grade</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="navbar">
+    <a href="/">🏠 Dashboard</a>
+    <a href="/grades">📊 Grades</a>
+    <a href="/revision">📅 Revision</a>
+</div>
+
+<div class="container wide">
+    <h1>Edit Grade</h1>
+    <form method="POST" class="form-inline">
+        <input name="subject" value="{{ grade[1] }}" required>
+        <input type="number" name="score" value="{{ grade[2] }}" required>
+        <input type="date" name="exam_date" value="{{ grade[3] }}" required>
+        <button type="submit">💾 Save Changes</button>
+    </form>
+</div>
+</body>
+</html>
+
