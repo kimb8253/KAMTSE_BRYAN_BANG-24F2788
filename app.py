@@ -1,120 +1,104 @@
 from flask import Flask, render_template, request, redirect, url_for
 import sqlite3
-import datetime
 
 app = Flask(__name__)
 
-# Dashboard
-@app.route('/')
+# Database helper
+def get_db():
+    conn = sqlite3.connect("data.db")
+    conn.row_factory = sqlite3.Row
+    return conn
+
+@app.route("/")
 def dashboard():
-    conn = sqlite3.connect('data.db')
-    c = conn.cursor()
-    c.execute("SELECT AVG(score) FROM grades")
-    avg = c.fetchone()[0]
-    if avg is None:
-        avg = 0
-    c.execute("SELECT subject, AVG(score) FROM grades GROUP BY subject")
-    subjects = c.fetchall()
-    c.execute("SELECT * FROM grades")
-    grades = c.fetchall()
-    c.execute("SELECT * FROM revision")
-    revision = c.fetchall()
+    conn = get_db()
+    grades = conn.execute("SELECT * FROM grades").fetchall()
+    revisions = conn.execute("SELECT * FROM revisions").fetchall()
     conn.close()
-    return render_template('dashboard.html',
-                           avg_grade=round(avg,2),
-                           subjects=subjects,
-                           grades=grades,
-                           revision=revision,
-                           date=datetime.date.today().strftime("%B %d, %Y"))
+    return render_template("dashboard.html", grades=grades, revisions=revisions)
 
-# Grades CRUD
-@app.route('/grades', methods=['GET','POST'])
-def grades_page():
-    conn = sqlite3.connect('data.db')
-    c = conn.cursor()
-    if request.method == 'POST':
-        subject = request.form['subject']
-        score = int(request.form['score'])
-        exam_date = request.form['exam_date']
-        c.execute("INSERT INTO grades (subject, score, exam_date) VALUES (?,?,?)",
-                  (subject, score, exam_date))
-        conn.commit()
-    c.execute("SELECT * FROM grades")
-    grades = c.fetchall()
+# ---------------- GRADES ----------------
+@app.route("/grades")
+def grades():
+    conn = get_db()
+    grades = conn.execute("SELECT * FROM grades").fetchall()
     conn.close()
-    return render_template('grades.html', grades=grades)
+    return render_template("grades.html", grades=grades)
 
-@app.route('/edit_grade/<int:id>', methods=['GET','POST'])
-def edit_grade(id):
-    conn = sqlite3.connect('data.db')
-    c = conn.cursor()
-    if request.method == 'POST':
-        subject = request.form['subject']
-        score = int(request.form['score'])
-        exam_date = request.form['exam_date']
-        c.execute("UPDATE grades SET subject=?, score=?, exam_date=? WHERE id=?",
-                  (subject, score, exam_date, id))
-        conn.commit()
-        conn.close()
-        return redirect(url_for('grades_page'))
-    c.execute("SELECT * FROM grades WHERE id=?", (id,))
-    grade = c.fetchone()
+@app.route("/add_grade", methods=["POST"])
+def add_grade():
+    subject = request.form["subject"]
+    score = request.form["score"]
+    conn = get_db()
+    conn.execute("INSERT INTO grades (subject, score) VALUES (?, ?)", (subject, score))
+    conn.commit()
     conn.close()
-    return render_template('edit_grade.html', grade=grade)
+    return redirect(url_for("grades"))
 
-@app.route('/delete_grade/<int:id>')
+@app.route("/delete_grade/<int:id>")
 def delete_grade(id):
-    conn = sqlite3.connect('data.db')
-    c = conn.cursor()
-    c.execute("DELETE FROM grades WHERE id=?", (id,))
+    conn = get_db()
+    conn.execute("DELETE FROM grades WHERE id=?", (id,))
     conn.commit()
     conn.close()
-    return redirect(url_for('grades_page'))
+    return redirect(url_for("grades"))
 
-# Revision CRUD
-@app.route('/revision', methods=['GET','POST'])
-def revision_page():
-    conn = sqlite3.connect('data.db')
-    c = conn.cursor()
-    if request.method == 'POST':
-        subject = request.form['subject']
-        date = request.form['date']
-        time = request.form['time']
-        c.execute("INSERT INTO revision (subject, date, time) VALUES (?,?,?)",
-                  (subject, date, time))
-        conn.commit()
-    c.execute("SELECT * FROM revision")
-    revision = c.fetchall()
-    conn.close()
-    return render_template('revision.html', revision=revision)
-
-@app.route('/edit_revision/<int:id>', methods=['GET','POST'])
-def edit_revision(id):
-    conn = sqlite3.connect('data.db')
-    c = conn.cursor()
-    if request.method == 'POST':
-        subject = request.form['subject']
-        date = request.form['date']
-        time = request.form['time']
-        c.execute("UPDATE revision SET subject=?, date=?, time=? WHERE id=?",
-                  (subject, date, time, id))
+@app.route("/edit_grade/<int:id>", methods=["GET", "POST"])
+def edit_grade(id):
+    conn = get_db()
+    if request.method == "POST":
+        subject = request.form["subject"]
+        score = request.form["score"]
+        conn.execute("UPDATE grades SET subject=?, score=? WHERE id=?", (subject, score, id))
         conn.commit()
         conn.close()
-        return redirect(url_for('revision_page'))
-    c.execute("SELECT * FROM revision WHERE id=?", (id,))
-    rev = c.fetchone()
+        return redirect(url_for("grades"))
+    grade = conn.execute("SELECT * FROM grades WHERE id=?", (id,)).fetchone()
     conn.close()
-    return render_template('edit_revision.html', rev=rev)
+    return render_template("edit_grade.html", grade=grade)
 
-@app.route('/delete_revision/<int:id>')
-def delete_revision(id):
-    conn = sqlite3.connect('data.db')
-    c = conn.cursor()
-    c.execute("DELETE FROM revision WHERE id=?", (id,))
+# ---------------- REVISIONS ----------------
+@app.route("/revisions")
+def revisions():
+    conn = get_db()
+    revisions = conn.execute("SELECT * FROM revisions").fetchall()
+    conn.close()
+    return render_template("revisions.html", revisions=revisions)
+
+@app.route("/add_revision", methods=["POST"])
+def add_revision():
+    subject = request.form["subject"]
+    date = request.form["date"]
+    time = request.form["time"]
+    conn = get_db()
+    conn.execute("INSERT INTO revisions (subject, date, time) VALUES (?, ?, ?)", (subject, date, time))
     conn.commit()
     conn.close()
-    return redirect(url_for('revision_page'))
+    return redirect(url_for("revisions"))
 
-if __name__ == '__main__':
+@app.route("/delete_revision/<int:id>")
+def delete_revision(id):
+    conn = get_db()
+    conn.execute("DELETE FROM revisions WHERE id=?", (id,))
+    conn.commit()
+    conn.close()
+    return redirect(url_for("revisions"))
+
+@app.route("/edit_revision/<int:id>", methods=["GET", "POST"])
+def edit_revision(id):
+    conn = get_db()
+    if request.method == "POST":
+        subject = request.form["subject"]
+        date = request.form["date"]
+        time = request.form["time"]
+        conn.execute("UPDATE revisions SET subject=?, date=?, time=? WHERE id=?", (subject, date, time, id))
+        conn.commit()
+        conn.close()
+        return redirect(url_for("revisions"))
+    revision = conn.execute("SELECT * FROM revisions WHERE id=?", (id,)).fetchone()
+    conn.close()
+    return render_template("edit_revision.html", revision=revision)
+
+if __name__ == "__main__":
     app.run(debug=True)
 

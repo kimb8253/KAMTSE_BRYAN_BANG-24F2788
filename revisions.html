@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}Revisions{% endblock %}
+{% block content %}
+<div class="card">
+    <div class="card-header">Manage Revision Sessions</div>
+    <div class="card-body">
+        <form method="POST" action="{{ url_for('add_revision') }}" class="row g-3 mb-3">
+            <div class="col-md-6 col-sm-12">
+                <input type="text" name="subject" class="form-control" placeholder="Subject" required>
+            </div>
+            <div class="col-md-6 col-sm-12">
+                <input type="date" name="date" class="form-control" required>
+            </div>
+            <div class="col-12">
+                <button type="submit" class="btn btn-success">Add Revision</button>
+            </div>
+        </form>
+
+        <table class="table table-striped">
+            <tr><th>Subject</th><th>Date</th><th>Action</th></tr>
+            {% for r in revisions %}
+            <tr>
+                <td>{{ r['subject'] }}</td>
+                <td>{{ r['date'] }}</td>
+                <td>
+                    <a href="{{ url_for('delete_revision', id=r['id']) }}" 
+                       class="btn btn-danger btn-sm"
+                       onclick="return confirm('Delete this revision?')">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+{% endblock %}
+
