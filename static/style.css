@@ -8,6 +8,7 @@ body {
 .bg-primary {
     background: linear-gradient(135deg, #007bff, #0056b3);
     border-radius: 8px;
+    color: #fff;
 }
 .bg-primary h2 {
     font-weight: 600;
@@ -17,27 +18,33 @@ body {
     font-size: 1.1rem;
 }
 
-/* Cards */
+/* Cards base */
 .card {
     box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     border-radius: 8px;
     margin-bottom: 20px;
+    color: #fff; /* text white for contrast */
 }
 .card-header {
     font-weight: 600;
-    background-color: #343a40;
-    color: #fff;
-}
-.card-body {
-    font-size: 0.95rem;
+    border-bottom: none;
 }
 
-/* Summary cards hover effect */
-.card.text-center {
-    transition: transform 0.2s ease-in-out;
+/* Specific card colors */
+.card.grades {
+    background: linear-gradient(135deg, #3498db, #2980b9); /* Blue */
 }
-.card.text-center:hover {
-    transform: translateY(-5px);
+.card.revisions {
+    background: linear-gradient(135deg, #27ae60, #1e8449); /* Green */
+}
+.card.average {
+    background: linear-gradient(135deg, #f39c12, #d35400); /* Orange */
+}
+.card.subjects {
+    background: linear-gradient(135deg, #8e44ad, #6c3483); /* Purple */
+}
+.card.upcoming {
+    background: linear-gradient(135deg, #e74c3c, #c0392b); /* Red */
 }
 
 /* Progress bar */
@@ -45,15 +52,19 @@ body {
     height: 25px;
     border-radius: 12px;
     overflow: hidden;
+    background-color: #ddd;
 }
 .progress-bar {
     font-weight: 600;
     font-size: 0.9rem;
+    background: linear-gradient(135deg, #2ecc71, #27ae60);
 }
 
-/* Tables */
-.table {
-    font-size: 0.9rem;
+/* Tables inside colored cards */
+.card table {
+    background-color: rgba(255,255,255,0.9);
+    color: #000;
+    border-radius: 6px;
 }
 .table th {
     background-color: #f1f1f1;
@@ -81,30 +92,23 @@ body {
 
 /* Mobile responsiveness */
 @media (max-width: 768px) {
-    /* Make cards and tables fill screen */
     .card, .table {
         width: 100% !important;
-        font-size: 1rem; /* larger text */
+        font-size: 1rem;
     }
     .table td, .table th {
-        padding: 12px; /* more tap-friendly spacing */
+        padding: 12px;
     }
-
-    /* Bigger buttons */
     .btn {
         padding: 10px 16px;
         font-size: 0.95rem;
     }
-
-    /* Scale hero banner text */
     .bg-primary h2 {
         font-size: 1.8rem;
     }
     .bg-primary p {
         font-size: 1.1rem;
     }
-
-    /* Adjust card body text */
     .card-body {
         font-size: 0.9rem;
     }
