@@ -1,28 +1,112 @@
+/* General body styling */
 body {
     background-color: #f8f9fa;
-    font-family: Arial, sans-serif;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.card {
-    margin-bottom: 20px;
+/* Hero banner */
+.bg-primary {
+    background: linear-gradient(135deg, #007bff, #0056b3);
     border-radius: 8px;
+}
+.bg-primary h2 {
+    font-weight: 600;
+}
+.bg-primary p {
+    margin: 0;
+    font-size: 1.1rem;
+}
+
+/* Cards */
+.card {
     box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    margin-bottom: 20px;
 }
-
 .card-header {
-    font-weight: bold;
+    font-weight: 600;
     background-color: #343a40;
-    color: white;
+    color: #fff;
+}
+.card-body {
+    font-size: 0.95rem;
 }
 
+/* Summary cards hover effect */
+.card.text-center {
+    transition: transform 0.2s ease-in-out;
+}
+.card.text-center:hover {
+    transform: translateY(-5px);
+}
+
+/* Progress bar */
+.progress {
+    height: 25px;
+    border-radius: 12px;
+    overflow: hidden;
+}
+.progress-bar {
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+/* Tables */
 .table {
-    width: 100%;
-    margin-bottom: 1rem;
-    background-color: white;
+    font-size: 0.9rem;
+}
+.table th {
+    background-color: #f1f1f1;
+    font-weight: 600;
+}
+.table td, .table th {
+    padding: 10px;
 }
 
-canvas {
-    max-width: 100%;
-    height: auto;
+/* Navbar */
+.navbar {
+    margin-bottom: 20px;
+}
+.navbar-brand {
+    font-weight: 600;
+}
+.nav-link {
+    font-size: 0.95rem;
+}
+
+/* Buttons */
+.btn {
+    border-radius: 6px;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+    /* Make cards and tables fill screen */
+    .card, .table {
+        width: 100% !important;
+        font-size: 1rem; /* larger text */
+    }
+    .table td, .table th {
+        padding: 12px; /* more tap-friendly spacing */
+    }
+
+    /* Bigger buttons */
+    .btn {
+        padding: 10px 16px;
+        font-size: 0.95rem;
+    }
+
+    /* Scale hero banner text */
+    .bg-primary h2 {
+        font-size: 1.8rem;
+    }
+    .bg-primary p {
+        font-size: 1.1rem;
+    }
+
+    /* Adjust card body text */
+    .card-body {
+        font-size: 0.9rem;
+    }
 }
 
