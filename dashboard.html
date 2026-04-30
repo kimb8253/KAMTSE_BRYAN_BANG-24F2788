@@ -1,68 +1,46 @@
-<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Dashboard</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-</head>
-<body>
-<div class="navbar">
-    <a href="/">🏠 Dashboard</a>
-    <a href="/grades">📊 Grades</a>
-    <a href="/revision">📅 Revision</a>
+<div class="row mt-4">
+
+    <!-- Average Marks -->
+    <div class="col-md-4">
+        <div class="card shadow text-center">
+            <div class="card-header bg-primary text-white">
+                Average Marks
+            </div>
+            <div class="card-body">
+                <h3>
+                    {% if avg_grade %}
+                        {{ avg_grade|round(2) }}
+                    {% else %}
+                        No data yet
+                    {% endif %}
+                </h3>
+            </div>
+        </div>
+    </div>
+
+    <!-- Subjects Entered -->
+    <div class="col-md-4">
+        <div class="card shadow text-center">
+            <div class="card-header bg-success text-white">
+                Subjects Entered
+            </div>
+            <div class="card-body">
+                <h3>{{ subject_count if subject_count else '0' }}</h3>
+            </div>
+        </div>
+    </div>
+
+    <!-- Upcoming Revisions -->
+    <div class="col-md-4">
+        <div class="card shadow text-center">
+            <div class="card-header bg-warning text-dark">
+                Upcoming Revisions
+            </div>
+            <div class="card-body">
+                <h3>{{ revision_count if revision_count else '0' }}</h3>
+            </div>
+        </div>
+    </div>
+
 </div>
-
-<div class="container wide">
-    <!-- Hero Section -->
-    <div class="box hero">
-        <h1>Welcome!</h1>
-        <p>Today is {{ date }}</p>
-    </div>
-
-    <!-- Summary Cards -->
-    <div class="cards">
-        <div class="card blue">Average Grade<br><span>{{ avg_grade }}%</span></div>
-        <div class="card green">Total Subjects<br><span>{{ subjects|length }}</span></div>
-        <div class="card orange">Total Exams<br><span>{{ grades|length }}</span></div>
-        <div class="card purple">Total Revisions<br><span>{{ revision|length }}</span></div>
-    </div>
-
-    <!-- Subjects Overview -->
-    <div class="box">
-        <h2>Subjects Overview</h2>
-        <ul>
-            {% for s in subjects %}
-            <li><strong>{{ s[0] }}</strong> → {{ s[1] }}</li>
-            {% endfor %}
-        </ul>
-    </div>
-
-    <!-- Chart -->
-    <div class="box">
-        <h2>Performance Chart</h2>
-        <canvas id="subjectChart"></canvas>
-    </div>
-</div>
-
-<script>
-const ctx = document.getElementById('subjectChart');
-new Chart(ctx, {
-    type: 'bar',
-    data: {
-        labels: [{% for s in subjects %}'{{ s[0] }}',{% endfor %}],
-        datasets: [{
-            label: 'Average Score',
-            data: [{% for s in subjects %}{{ s[1] }},{% endfor %}],
-            backgroundColor: '#1877f2'
-        }]
-    },
-    options: {
-        responsive: true,
-        plugins: { legend: { display: false } }
-    }
-});
-</script>
-</body>
-</html>
 

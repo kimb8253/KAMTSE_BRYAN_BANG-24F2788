@@ -1,0 +1,13 @@
+CREATE TABLE grades (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    subject TEXT NOT NULL,
+    score INTEGER NOT NULL
+);
+
+CREATE TABLE revisions (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    subject TEXT NOT NULL,
+    date TEXT NOT NULL,
+    time TEXT
+);
+

@@ -1,23 +1,24 @@
 {% extends "base.html" %}
 {% block title %}Edit Revision{% endblock %}
 {% block content %}
-<div class="card">
-    <div class="card-header">Edit Revision</div>
+<div class="card shadow mt-4">
+    <div class="card-header bg-warning text-dark">Edit Revision</div>
     <div class="card-body">
-        <form method="POST">
+        <form method="post">
             <div class="mb-3">
-                <label>Subject</label>
-                <input type="text" name="subject" class="form-control" value="{{ revision['subject'] }}" required>
+                <label class="form-label">Enter Subject</label>
+                <input type="text" class="form-control" name="subject" value="{{ revision['subject'] }}" required>
             </div>
             <div class="mb-3">
-                <label>Date</label>
-                <input type="date" name="date" class="form-control" value="{{ revision['date'] }}" required>
+                <label class="form-label">Enter Date</label>
+                <input type="date" class="form-control" name="date" value="{{ revision['date'] }}" required>
             </div>
             <div class="mb-3">
-                <label>Time</label>
-                <input type="time" name="time" class="form-control" value="{{ revision['time'] }}" required>
+                <label class="form-label">Enter Time</label>
+                <input type="time" class="form-control" name="time" value="{{ revision['time'] }}" required>
             </div>
-            <button type="submit" class="btn btn-primary">Save Changes</button>
+            <button type="submit" class="btn btn-success">Save Changes</button>
+            <a href="{{ url_for('revisions') }}" class="btn btn-secondary">Cancel</a>
         </form>
     </div>
 </div>

@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Delete Revision{% endblock %}
+{% block content %}
+
+<div class="section">
+    <div class="card revisions">
+        <div class="card-header">Confirm Delete</div>
+        <div class="card-body">
+
+            <p class="mb-3">
+                Are you sure you want to delete this revision session?
+            </p>
+
+            <ul class="list-group mb-3">
+                <li class="list-group-item"><strong>Subject:</strong> {{ revision['subject'] }}</li>
+                <li class="list-group-item"><strong>Date:</strong> {{ revision['date'] }}</li>
+                <li class="list-group-item"><strong>Time:</strong> {{ revision['time'] }}</li>
+            </ul>
+
+            <form method="POST">
+                <button type="submit" class="btn btn-danger">Yes, Delete</button>
+                <a href="{{ url_for('revisions') }}" class="btn btn-light">Cancel</a>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+

@@ -1,37 +1,47 @@
 {% extends "base.html" %}
 {% block title %}Revisions{% endblock %}
 {% block content %}
-<div class="card">
-    <div class="card-header">Manage Revision Sessions</div>
+<div class="card shadow mt-4">
+    <div class="card-header bg-primary text-white">
+        Manage Revisions
+    </div>
     <div class="card-body">
-        <form method="POST" action="{{ url_for('add_revision') }}" class="row g-3 mb-3">
-            <div class="col-md-4 col-sm-12">
-                <input type="text" name="subject" class="form-control" placeholder="Subject" required>
+        <!-- Form posts to the correct endpoint -->
+        <form method="post" action="{{ url_for('revisions') }}">
+            <div class="mb-3">
+                <label for="subject" class="form-label">Enter Subject</label>
+                <input type="text" class="form-control" name="subject" placeholder="Enter Subject" required>
             </div>
-            <div class="col-md-4 col-sm-12">
-                <input type="date" name="date" class="form-control" required>
+            <div class="mb-3">
+                <label for="date" class="form-label">Enter Date</label>
+                <input type="date" class="form-control" name="date" required>
             </div>
-            <div class="col-md-4 col-sm-12">
-                <input type="time" name="time" class="form-control" required>
+            <div class="mb-3">
+                <label for="time" class="form-label">Enter Time</label>
+                <input type="time" class="form-control" name="time" required>
             </div>
-            <div class="col-12">
-                <button type="submit" class="btn btn-success">Add Revision</button>
-            </div>
+            <button type="submit" class="btn btn-success">Add Revision</button>
         </form>
+    </div>
+</div>
 
+<div class="card shadow mt-4">
+    <div class="card-header">Revisions List</div>
+    <div class="card-body">
         <table class="table table-striped">
-            <tr><th>Subject</th><th>Date</th><th>Time</th><th>Action</th></tr>
+            <tr><th>Subject</th><th>Date</th><th>Time</th><th>Actions</th></tr>
             {% for r in revisions %}
             <tr>
                 <td>{{ r['subject'] }}</td>
                 <td>{{ r['date'] }}</td>
                 <td>{{ r['time'] }}</td>
                 <td>
-                    <a href="{{ url_for('edit_revision', id=r['id']) }}" class="btn btn-primary btn-sm">Edit</a>
-                    <a href="{{ url_for('delete_revision', id=r['id']) }}" class="btn btn-danger btn-sm"
-                       onclick="return confirm('Delete this revision?')">Delete</a>
+                    <a href="{{ url_for('edit_revision', id=r['id']) }}" class="btn btn-warning btn-sm">Edit</a>
+                    <a href="{{ url_for('delete_revision', id=r['id']) }}" class="btn btn-danger btn-sm">Delete</a>
                 </td>
             </tr>
+            {% else %}
+            <tr><td colspan="4">No revisions scheduled</td></tr>
             {% endfor %}
         </table>
     </div>

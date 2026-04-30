@@ -1,93 +1,81 @@
 {% extends "base.html" %}
 {% block title %}Dashboard{% endblock %}
 {% block content %}
+<div class="row mt-4">
 
-<!-- Hero Banner -->
-<div class="p-4 mb-4 bg-primary text-white rounded">
-    <h2>Welcome back!</h2>
-    <p>Track your grades and revision sessions with ease.</p>
-</div>
-
-<div class="row">
-    <!-- Progress Bar -->
-    <div class="col-12 mb-4">
-        <div class="card">
-            <div class="card-header">Overall Progress</div>
+    <!-- Average Marks -->
+    <div class="col-md-4">
+        <div class="card shadow text-center">
+            <div class="card-header bg-primary text-white">Average Marks</div>
             <div class="card-body">
-                <div class="progress">
-                    <div class="progress-bar bg-success" role="progressbar" style="width: 70%;">
-                        70% Completed
-                    </div>
-                </div>
+                <h3>{{ avg_grade|round(2) if avg_grade else 'No data yet' }}</h3>
             </div>
         </div>
     </div>
 
-    <!-- Summary Cards -->
-    <div class="col-md-4 col-sm-12 mb-4">
-        <div class="card text-center">
+    <!-- Subjects Entered -->
+    <div class="col-md-4">
+        <div class="card shadow text-center">
+            <div class="card-header bg-success text-white">Subjects Entered</div>
             <div class="card-body">
-                <h5 class="card-title">Average Grade</h5>
-                <p class="card-text">
-                    {% if grades|length > 0 %}
-                        {{ (grades|map(attribute='score')|sum / grades|length)|round(1) }}%
-                    {% else %}
-                        No grades yet
-                    {% endif %}
-                </p>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-4 col-sm-12 mb-4">
-        <div class="card text-center">
-            <div class="card-body">
-                <h5 class="card-title">Subjects</h5>
-                <p class="card-text">{{ grades|length }}</p>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-4 col-sm-12 mb-4">
-        <div class="card text-center">
-            <div class="card-body">
-                <h5 class="card-title">Upcoming Revisions</h5>
-                <p class="card-text">{{ revisions|length }}</p>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="row">
-    <!-- Grades Table -->
-    <div class="col-md-6 col-sm-12 mb-4">
-        <div class="card">
-            <div class="card-header">Grades Summary</div>
-            <div class="card-body">
-                <table class="table table-striped">
-                    <tr><th>Subject</th><th>Score</th></tr>
-                    {% for g in grades %}
-                    <tr><td>{{ g['subject'] }}</td><td>{{ g['score'] }}</td></tr>
-                    {% endfor %}
-                </table>
+                <h3>{{ subject_count if subject_count else '0' }}</h3>
             </div>
         </div>
     </div>
 
     <!-- Upcoming Revisions -->
-    <div class="col-md-6 col-sm-12 mb-4">
-        <div class="card">
-            <div class="card-header">Upcoming Revisions</div>
+    <div class="col-md-4">
+        <div class="card shadow text-center">
+            <div class="card-header bg-warning text-dark">Upcoming Revisions</div>
             <div class="card-body">
-                <ul class="list-group">
-                    {% for r in revisions[:3] %}
-                    <li class="list-group-item">
-                        {{ r['subject'] }} → {{ r['date'] }} at {{ r['time'] }}
-                    </li>
-                    {% endfor %}
-                </ul>
+                <h3>{{ revision_count if revision_count else '0' }}</h3>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Overall Progress -->
+<div class="card shadow mt-4">
+    <div class="card-header bg-info text-white">Overall Progress</div>
+    <div class="card-body">
+        <div class="progress" style="height: 30px;">
+            <div class="progress-bar bg-success" role="progressbar"
+                 style="width: {{ progress }}%;" aria-valuenow="{{ progress }}" aria-valuemin="0" aria-valuemax="100">
+                {{ progress }}% Completed
             </div>
         </div>
     </div>
 </div>
 
+<!-- Grades Table -->
+<div class="card shadow mt-4">
+    <div class="card-header bg-secondary text-white">Grades Table</div>
+    <div class="card-body">
+        <table class="table table-striped">
+            <tr><th>Subject</th><th>Marks</th></tr>
+            {% for g in grades %}
+            <tr><td>{{ g['subject'] }}</td><td>{{ g['score'] }}</td></tr>
+            {% else %}
+            <tr><td colspan="2">No grades yet</td></tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+
+<!-- Revisions Table -->
+<div class="card shadow mt-4">
+    <div class="card-header bg-secondary text-white">Revisions Table</div>
+    <div class="card-body">
+        <table class="table table-striped">
+            <tr><th>Subject</th><th>Date</th><th>Time</th></tr>
+            {% for r in revisions %}
+            <tr><td>{{ r['subject'] }}</td><td>{{ r['date'] }}</td><td>{{ r['time'] }}</td></tr>
+            {% else %}
+            <tr><td colspan="3">No revisions scheduled</td></tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
 {% endblock %}
 

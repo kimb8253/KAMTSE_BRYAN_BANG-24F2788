@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Delete Revision{% endblock %}
+{% block content %}
+<div class="card shadow mt-4">
+    <div class="card-header bg-danger text-white">Delete Revision</div>
+    <div class="card-body">
+        <p>Are you sure you want to delete the revision for <strong>{{ revision['subject'] }}</strong> scheduled on {{ revision['date'] }} at {{ revision['time'] }}?</p>
+        <form method="post">
+            <button type="submit" class="btn btn-danger">Yes, Delete</button>
+            <a href="{{ url_for('revisions') }}" class="btn btn-secondary">Cancel</a>
+        </form>
+    </div>
+</div>
+{% endblock %}
+

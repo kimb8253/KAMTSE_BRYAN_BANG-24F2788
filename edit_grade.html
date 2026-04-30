@@ -1,26 +1,26 @@
-<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Edit Grade</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
-<body>
-<div class="navbar">
-    <a href="/">🏠 Dashboard</a>
-    <a href="/grades">📊 Grades</a>
-    <a href="/revision">📅 Revision</a>
+{% extends "base.html" %}
+{% block title %}Edit Grade{% endblock %}
+{% block content %}
+
+<div class="section">
+    <div class="card grades shadow">
+        <div class="card-header">Edit Grade</div>
+        <div class="card-body">
+            <form method="POST">
+                <div class="mb-3">
+                    <label class="form-label">Subject</label>
+                    <input type="text" name="subject" class="form-control" value="{{ grade['subject'] }}" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Score</label>
+                    <input type="number" name="score" class="form-control" value="{{ grade['score'] }}" required>
+                </div>
+                <button type="submit" class="btn btn-light">Save Changes</button>
+                <a href="{{ url_for('grades') }}" class="btn btn-secondary">Cancel</a>
+            </form>
+        </div>
+    </div>
 </div>
 
-<div class="container wide">
-    <h1>Edit Grade</h1>
-    <form method="POST" class="form-inline">
-        <input name="subject" value="{{ grade[1] }}" required>
-        <input type="number" name="score" value="{{ grade[2] }}" required>
-        <input type="date" name="exam_date" value="{{ grade[3] }}" required>
-        <button type="submit">💾 Save Changes</button>
-    </form>
-</div>
-</body>
-</html>
+{% endblock %}
 

@@ -1,26 +1,30 @@
-<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Edit Revision</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
-<body>
-<div class="navbar">
-    <a href="/">🏠 Dashboard</a>
-    <a href="/grades">📊 Grades</a>
-    <a href="/revision">📅 Revision</a>
+{% extends "base.html" %}
+{% block title %}Edit Revision{% endblock %}
+{% block content %}
+
+<div class="section">
+    <div class="card revisions shadow">
+        <div class="card-header">Edit Revision Session</div>
+        <div class="card-body">
+            <form method="POST">
+                <div class="mb-3">
+                    <label class="form-label">Subject</label>
+                    <input type="text" name="subject" class="form-control" value="{{ revision['subject'] }}" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Date</label>
+                    <input type="date" name="date" class="form-control" value="{{ revision['date'] }}" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Time</label>
+                    <input type="time" name="time" class="form-control" value="{{ revision['time'] }}">
+                </div>
+                <button type="submit" class="btn btn-light">Save Changes</button>
+                <a href="{{ url_for('revisions') }}" class="btn btn-secondary">Cancel</a>
+            </form>
+        </div>
+    </div>
 </div>
 
-<div class="container wide">
-    <h1>Edit Revision</h1>
-    <form method="POST" class="form-inline">
-        <input name="subject" value="{{ rev[1] }}" required>
-        <input type="date" name="date" value="{{ rev[2] }}" required>
-        <input type="time" name="time" value="{{ rev[3] }}" required>
-        <button type="submit">💾 Save Changes</button>
-    </form>
-</div>
-</body>
-</html>
+{% endblock %}
 

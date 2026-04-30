@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Delete Grade{% endblock %}
+{% block content %}
+<div class="card shadow mt-4">
+    <div class="card-header bg-danger text-white">Delete Grade</div>
+    <div class="card-body">
+        <p>Are you sure you want to delete the grade for <strong>{{ grade['subject'] }}</strong> (Marks: {{ grade['score'] }})?</p>
+        <form method="post">
+            <button type="submit" class="btn btn-danger">Yes, Delete</button>
+            <a href="{{ url_for('grades') }}" class="btn btn-secondary">Cancel</a>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
